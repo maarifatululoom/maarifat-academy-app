@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#121a33">
+<title>Academy App | Maarifat-ul-Uloom Academy</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Academy">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/webp" href="logo-dark.webp">
+<link rel="apple-touch-icon" href="icon-192.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<style>
+:root{--bg:#f6f0e3;--card:#fffdf8;--field:#fff;--tx:#1b2440;--mut:#6b7289;--line:#e4dac4;--navy:#222f55;--gold:#d4a84b;--err:#c0392b;--ok:#1e8e5a;--warn:#b7791f;
+--hpat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23d4a84b' stroke-opacity='.3' stroke-width='1'%3E%3Crect x='20' y='20' width='40' height='40'/%3E%3Crect x='20' y='20' width='40' height='40' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='7'/%3E%3Cpath d='M0 40h20M60 40h20M40 0v20M40 60v20'/%3E%3C/g%3E%3Cg fill='%23d4a84b' fill-opacity='.4'%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='80' cy='0' r='2'/%3E%3Ccircle cx='0' cy='80' r='2'/%3E%3Ccircle cx='80' cy='80' r='2'/%3E%3C/g%3E%3C/svg%3E");
+--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%231F2A44' stroke-opacity='.09' stroke-width='1'%3E%3Crect x='20' y='20' width='40' height='40'/%3E%3Crect x='20' y='20' width='40' height='40' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='7'/%3E%3Cpath d='M0 40h20M60 40h20M40 0v20M40 60v20'/%3E%3C/g%3E%3Cg fill='%23d4a84b' fill-opacity='.3'%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='80' cy='0' r='2'/%3E%3Ccircle cx='0' cy='80' r='2'/%3E%3Ccircle cx='80' cy='80' r='2'/%3E%3C/g%3E%3C/svg%3E")}
+:root[data-theme=dark]{--bg:#0e1424;--card:#16203a;--field:#1d2947;--tx:#e9edf7;--mut:#9aa6bf;--line:#2c3a5c;--navy:#33477d;
+--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23d4a84b' stroke-opacity='.12' stroke-width='1'%3E%3Crect x='20' y='20' width='40' height='40'/%3E%3Crect x='20' y='20' width='40' height='40' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='7'/%3E%3Cpath d='M0 40h20M60 40h20M40 0v20M40 60v20'/%3E%3C/g%3E%3Cg fill='%23d4a84b' fill-opacity='.22'%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='80' cy='0' r='2'/%3E%3Ccircle cx='0' cy='80' r='2'/%3E%3Ccircle cx='80' cy='80' r='2'/%3E%3C/g%3E%3C/svg%3E")}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.45;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background-image:var(--pat);background-size:80px 80px;opacity:.35;z-index:-1;pointer-events:none}
+@keyframes flow{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+@keyframes drift{to{background-position:160px 80px}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes sweep{0%{transform:translateX(-120%) skewX(-20deg)}60%,100%{transform:translateX(220%) skewX(-20deg)}}
+@keyframes gold{to{background-position:200% 0}}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+header{background:linear-gradient(135deg,#0d1429,#26386b,#0d1429,#1b2a55);background-size:300% 300%;animation:flow 14s ease infinite;border-radius:0 0 32px 32px;padding:18px 16px 22px;text-align:center;position:relative;color:#fff;overflow:hidden;box-shadow:0 12px 32px rgba(13,20,41,.35)}
+header::after{content:"";position:absolute;inset:0;background-image:var(--hpat);background-size:80px 80px;animation:drift 50s linear infinite;pointer-events:none;-webkit-mask-image:linear-gradient(#000 50%,transparent);mask-image:linear-gradient(#000 50%,transparent)}
+header>*{position:relative;z-index:1}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;min-height:40px}
+.ib{position:relative;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;min-width:40px;height:40px;padding:0 12px;font:600 13px Poppins,sans-serif;cursor:pointer;transition:.25s}
+.ib:hover{background:rgba(212,168,75,.35)}
+.dot{position:absolute;top:-4px;right:-4px;background:var(--err);color:#fff;border-radius:999px;font-size:11px;min-width:18px;height:18px;line-height:18px;padding:0 4px}
+.logo{position:relative;width:78px;height:78px;margin:0 auto;animation:float 5s ease-in-out infinite}
+.logo::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,#d4a84b,#fff6d6,#d4a84b,#8a6a1f,#d4a84b);animation:spin 5s linear infinite;box-shadow:0 0 22px rgba(212,168,75,.6)}
+.logo .box{position:absolute;inset:4px;border-radius:50%;overflow:hidden;background:#0d1429}
+.logo img{width:100%;height:100%;display:block}
+.logo .box::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);animation:sweep 4.5s ease-in-out infinite}
+.lgL{display:none}:root[data-theme=dark] .lgL{display:block}:root[data-theme=dark] .lgD{display:none}
+h1{font:700 20px Cinzel,Georgia,serif;font-variant:small-caps;letter-spacing:1px;margin:10px 0 4px;background:linear-gradient(90deg,#fff 0%,#f6dd95 25%,#fff 50%,#f6dd95 75%,#fff 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gold 5s linear infinite}
+.who{font-size:12px;color:var(--gold);letter-spacing:1px}
+main{max-width:720px;margin:auto;padding:14px 14px 30px}
+#nav{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+#nav button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:999px;padding:9px 16px;font:600 13px Poppins,sans-serif;cursor:pointer;transition:.2s}
+#nav button.on{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 4px 12px rgba(34,47,85,.35)}
+h2{font-size:18px;margin:6px 0 12px;display:flex;align-items:center;gap:8px}
+h2::before{content:"";width:5px;height:20px;border-radius:3px;background:linear-gradient(var(--gold),#8a6a1f)}
+.card{background-color:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:0 8px 22px rgba(20,30,60,.07);animation:up .4s both;display:block;width:100%;text-align:left;color:var(--tx);font:inherit}
+.card.link{cursor:pointer;border-color:var(--gold)}
+label{display:block;font-size:12.5px;font-weight:600;margin:10px 0 5px}
+input,select,textarea{width:100%;height:46px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--field);color:var(--tx);font:400 14px Poppins,sans-serif}
+input:focus,select:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,168,75,.25)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.g3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;margin-top:8px}
+.btn{position:relative;overflow:hidden;border:0;border-radius:14px;background:linear-gradient(135deg,#1b2a55,#33477d);color:#fff;font:600 14px Poppins,sans-serif;padding:12px 18px;cursor:pointer;border-bottom:3px solid var(--gold);margin:6px 6px 6px 0;transition:.2s}
+.btn:hover{transform:translateY(-1px)}.btn.sm{padding:7px 12px;font-size:12px;border-bottom-width:2px}.btn.red{background:linear-gradient(135deg,#8e2a20,#c0392b)}.btn.grn{background:linear-gradient(135deg,#15724a,#1e8e5a)}.btn.full{width:100%}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;padding:12px;animation:up .4s both}
+.kpi div{font-size:20px;font-weight:700}.kpi small,.mut{color:var(--mut);font-size:12.5px}
+.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600;background:#e8ecf5;color:#1b2440}
+.badge.Active,.badge.Paid{background:#d9f3e6;color:#146c43}.badge.Pending,.badge.Unpaid{background:#fff1cf;color:#8a5a00}.badge.Left{background:#fde1de;color:#a02a1e}
+.rowx{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.ln{display:flex;justify-content:space-between;font-size:13.5px;padding:3px 0;border-bottom:1px dashed var(--line)}.ln.big{font-weight:700;font-size:15.5px;border-bottom:0;border-top:2px solid var(--gold);margin-top:4px;padding-top:6px}
+.bars{display:flex;gap:10px;align-items:flex-end;height:130px;margin:10px 0 6px}.bars>div{flex:1;text-align:center;font-size:10px;color:var(--mut)}
+.bars .pair{display:flex;gap:3px;align-items:flex-end;height:110px;justify-content:center}.bars i{display:block;width:40%;border-radius:5px 5px 0 0;min-height:2px}.bars .in{background:var(--ok)}.bars .ex{background:var(--err)}
+.load{text-align:center;padding:30px;color:var(--mut)}
+#np{position:absolute;right:0;top:48px;width:min(92vw,340px);max-height:60vh;overflow:auto;background:var(--card);color:var(--tx);border:1px solid var(--gold);border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,.35);text-align:left;z-index:5;display:none}
+#np div{padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px}#np div.un{background:rgba(212,168,75,.15)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 18px;border-radius:14px;font-size:14px;z-index:9;display:none;border-bottom:3px solid var(--gold);max-width:92vw}
+#toast.bad{background:var(--err)}
+.auth{max-width:420px;margin:18px auto}.tabs2{display:flex;gap:6px;margin-bottom:8px}.tabs2 button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:12px;padding:10px;font:600 13px Poppins,sans-serif;cursor:pointer}.tabs2 button.on{background:var(--navy);color:#fff}
+.hide{display:none!important}
+footer{text-align:center;font-size:11px;letter-spacing:1px;color:var(--mut);padding:10px 0 26px;text-transform:uppercase}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <button class="ib" id="bTh" type="button" aria-label="Theme">🌙</button>
+    <div style="display:flex;gap:8px">
+      <button class="ib hide" id="bBell" type="button" aria-label="Notifications">🔔<span class="dot hide" id="dot">0</span><div id="np"></div></button>
+      <button class="ib hide" id="bOut" type="button">Logout</button>
+    </div>
+  </div>
+  <div class="logo"><div class="box"><img class="lgD" src="logo-dark.webp" alt="Logo"><img class="lgL" src="logo-light.webp" alt="Logo"></div></div>
+  <h1>Maarifat-ul-Uloom Academy</h1>
+  <div class="who" id="who">ACADEMY APP</div>
+</header>
+<main>
+  <section id="auth" class="auth hide">
+    <div class="tabs2"><button id="tLogin" class="on" type="button">Login</button><button id="tSign" type="button">Teacher sign up</button></div>
+    <form id="lf" class="card"><label>Email</label><input id="le" type="email" autocomplete="email" required><label>Password</label><input id="lp" type="password" autocomplete="current-password" required><button class="btn full" type="submit">Login</button></form>
+    <form id="sf" class="card hide"><label>Full name</label><input id="sn" maxlength="80" required><label>Email</label><input id="se" type="email" autocomplete="email" required><label>Password (min 8)</label><input id="sp" type="password" minlength="8" autocomplete="new-password" required><button class="btn full" type="submit">Create account</button><p class="mut">After sign up, the owner must approve your account before you can use the app.</p></form>
+  </section>
+  <section id="wait" class="card hide"><h2>Waiting for approval</h2><p>Your account is created. The owner will approve it soon. Please check again later.</p><button class="btn" id="bRe" type="button">Check again</button></section>
+  <section id="app" class="hide"><nav id="nav"></nav><div id="view"></div></section>
+</main>
+<footer>Maarifat-ul-Uloom Academy · Staff only</footer>
+<div id="toast"></div>
+<script>if(/[?&]demo\b/.test(location.search))document.write('<script src="demo.js"><\/script>')</script>
+<script src="app.js"></script>
+<script src="fees.js"></script>
+<script src="extra.js"></script>
+<script src="more.js"></script>
+<script src="pwa.js" data-name="Academy App"></script>
+</body>
+</html>
