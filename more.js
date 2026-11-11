@@ -11,3 +11,36 @@ acts.sDel=async d=>{
   const {data,error}=await sb.rpc('delete_staff',{p_user_id:d.id});
   error?toast(error.message,1):(toast(data||'Deleted \u2713'),show('staff'));
 };
+
+// ---------- Academy balance: what is left for the academy after teachers are paid ----------
+async function acadBal(m){
+  const [s,e]=mr(m);
+  const [ts,col,ex]=await Promise.all([
+    q(sb.rpc('teacher_statement',{p_month:m})),
+    q(sb.from('fees').select('amount').eq('month',m).eq('status','Paid')),
+    q(sb.from('expenses').select('amount').gte('date',s).lt('date',e))]);
+  const collected=sum(col),tcost=ts.reduce((n,r)=>n+r.share_earned+r.fixed_part+r.bonus-r.deduction,0),
+    paidOut=ts.reduce((n,r)=>n+r.paid_out,0),owed=ts.reduce((n,r)=>n+r.balance,0),exps=sum(ex),
+    afterT=collected-tcost,left=afterT-exps;
+  return {m,collected,tcost,paidOut,owed,exps,afterT,left};
+}
+function acadCard(b){
+  return '<div class="card" style="border-color:var(--gold)"><b>💰 Academy balance after teachers ('+esc(b.m)+')</b>'+
+    ln('Fees collected',rs(b.collected))+
+    ln('Teachers\' total earnings (share + fixed + bonus − deductions)','- '+rs(b.tcost))+
+    ln('Academy keeps after teachers',rs(b.afterT),1)+
+    ln('Other expenses (rent, bills, etc.)','- '+rs(b.exps))+
+    ln(b.left>=0?'✅ Remaining with academy':'⚠️ Shortfall',rs(Math.abs(b.left)),1)+
+    '<div class="mut" style="margin-top:8px">Already paid to teachers: '+rs(b.paidOut)+' · Still to pay teachers: '+rs(b.owed)+'. Counted only from fees marked <b>Paid</b> for this month.</div></div>';
+}
+const _finBal=V.finance;
+V.finance=async()=>{
+  await _finBal();
+  try{const b=await acadBal(S.mm||today().slice(0,7)),k=$('view').querySelector('.kpis');if(k&&tab==='finance')k.insertAdjacentHTML('beforebegin',acadCard(b))}catch(e){}
+};
+const _homeBal=V.home;
+V.home=async()=>{
+  await _homeBal();
+  try{if(me.role!=='owner')return;const b=await acadBal(today().slice(0,7)),k=$('view').querySelector('.kpis');
+    if(k&&tab==='home'){k.insertAdjacentHTML('beforeend',kpi('Academy keeps after teachers',rs(b.afterT))+kpi(b.left>=0?'Remaining after expenses':'Shortfall after expenses',rs(Math.abs(b.left))))}}catch(e){}
+};
